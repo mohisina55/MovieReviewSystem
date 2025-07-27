@@ -9,9 +9,12 @@ import com.example.MovieReviewSystem.Service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -22,10 +25,17 @@ public class ReviewController {
     @Autowired
     private UserDetailsServiceImpl userService;
 
-    @PostMapping("/movie/{movieId}/user/{userId}")
-    public ResponseEntity<Review> addReview(@PathVariable Long movieId, @PathVariable Long userId, @RequestBody Review review) {
-        return ResponseEntity.ok(reviewService.addReview(movieId, userId, review));
+    @PostMapping("/movie/{movieId}")
+    public ResponseEntity<Review> addReview(
+            @PathVariable Long movieId,
+            @RequestBody Review review,
+            Principal principal) {
+
+        String email = principal.getName(); // Extract user email from JWT
+        return ResponseEntity.ok(reviewService.addReview(movieId, email, review));
     }
+
+
 
     @GetMapping
     public ResponseEntity<List<Review>> getAllReviews() {

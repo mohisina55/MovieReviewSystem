@@ -21,16 +21,19 @@ public class ReviewService {
     @Autowired private UserRepo userRepository;
     @Autowired private MovieRepo movieRepository;
 
-    public Review addReview(Long movieId, Long userId, Review review) {
-        User user = userRepository.findById(userId).orElseThrow();
-        Movie movie = movieRepository.findById(movieId).orElseThrow();
+    public Review addReview(Long movieId, String email, Review review) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Movie movie = movieRepository.findById(movieId)
+                .orElseThrow(() -> new RuntimeException("Movie not found"));
 
         review.setUser(user);
         review.setMovie(movie);
-        review.setTimestamp(LocalDateTime.now());
 
         return reviewRepository.save(review);
     }
+
 
     public List<Review> getReviewsByMovie(Long movieId) {
         return reviewRepository.findByMovieId(movieId);
