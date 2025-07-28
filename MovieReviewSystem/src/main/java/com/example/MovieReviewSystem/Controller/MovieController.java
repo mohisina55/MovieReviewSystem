@@ -43,4 +43,8 @@ public class MovieController {
     public ResponseEntity<Movie> getMovie(@PathVariable Long id) {
         return ResponseEntity.ok(movieService.getMovieById(id));
     }
+    @GetMapping("/top-rated")
+    public ResponseEntity<List<Movie>> getTopRatedMovies(@RequestParam(defaultValue = "5") int limit) {
+        return ResponseEntity.ok(movieService.getTopRatedMovies(limit));
+    }
 }

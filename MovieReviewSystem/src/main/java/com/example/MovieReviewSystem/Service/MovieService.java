@@ -1,12 +1,11 @@
 package com.example.MovieReviewSystem.Service;
 
-
-
 import com.example.MovieReviewSystem.Entity.Movie;
 import com.example.MovieReviewSystem.Repository.MovieRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 @Service
@@ -37,5 +36,9 @@ public class MovieService {
 
     public Movie getMovieById(Long id) {
         return movieRepository.findById(id).orElseThrow();
+    }
+    public List<Movie> getTopRatedMovies(int limit) {
+        Pageable pageable = PageRequest.of(0, limit);
+        return movieRepository.findTopRatedMovies(pageable);
     }
 }
