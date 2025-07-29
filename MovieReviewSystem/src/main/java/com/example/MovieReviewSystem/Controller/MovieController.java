@@ -1,6 +1,8 @@
 package com.example.MovieReviewSystem.Controller;
-
+import com.example.MovieReviewSystem.Repository.UserRepo;
+import com.example.MovieReviewSystem.Security.JwtUtil;
 import com.example.MovieReviewSystem.Entity.Movie;
+import com.example.MovieReviewSystem.Entity.User;
 import com.example.MovieReviewSystem.Service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

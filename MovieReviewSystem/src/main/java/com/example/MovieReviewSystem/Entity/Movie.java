@@ -19,6 +19,16 @@ public class Movie {
     private String genre;
     private String description;
     private LocalDate releaseDate;
+    @Column(name = "image_url", length = 2000)
+    private String imageUrl;
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
     public String getDescription() {
         return description;

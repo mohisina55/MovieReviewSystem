@@ -1,4 +1,5 @@
 package com.example.MovieReviewSystem.Security;
+
 import com.example.MovieReviewSystem.Security.JwtFilter;
 import com.example.MovieReviewSystem.Security.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import org.springframework.security.crypto.bcrypt.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class SecurityConfig {
@@ -28,9 +31,11 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/error").permitAll()// ✅ Fix here
-                        .anyRequest().authenticated()
-                )
+                        .requestMatchers("/api/auth/**", "movies.html", "/review.html", "/index.html", "/error")
+                        .permitAll()// ✅ Fix
+                        // here
+                        .requestMatchers("/api/reviews/**").permitAll()
+                        .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
@@ -38,9 +43,8 @@ public class SecurityConfig {
         return http.build();
     }
 
-
     @Bean
-    public AuthenticationProvider authenticationProvider() {  // ✅ Remove parameters here
+    public AuthenticationProvider authenticationProvider() { // ✅ Remove parameters here
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService); // ✅ Use injected userDetailsService
         authProvider.setPasswordEncoder(passwordEncoder());
@@ -57,4 +61,3 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 }
-

@@ -23,6 +23,7 @@ public class MovieService {
         movie.setGenre(updatedMovie.getGenre());
         movie.setDescription(updatedMovie.getDescription());
         movie.setReleaseDate(updatedMovie.getReleaseDate());
+        movie.setImageUrl(updatedMovie.getImageUrl());
         return movieRepository.save(movie);
     }
 
